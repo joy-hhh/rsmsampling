@@ -13,7 +13,22 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-mus_sampling <- \(SR, RC, PL, PM, EA, pop, am){
+#' RSM Orb MUS Sampling
+#'
+#' @param SR Significant Risk : "Yes" or "No".
+#' @param RC Reliance on Control : "Yes" or "No".
+#' @param PL Planned Level of Assurance from Substantive Analytical Procedures : "Analytical.Procedures.Not.Performed" 4 , "High" 1 , "Low" 2, "Moderate" 3.
+#' @param PM Tolerable Misstatement(generally performance materiality) : Integer number.
+#' @param EA Expected misstatement : generally Tolerable Misstatement * 0.05.
+#' @param pop Population Data.
+#' @param am Amount Column Name : Character.
+#'
+#' @return sampling data.frame.
+#' @export
+#'
+#' @examples
+#' mus_sampling("Yes", "Yes", 4, 700000000, 0.05, pop, "amount")
+mus_sampling <- function(SR, RC , PL, PM, EA, pop, am){
 
   # mus_sampling 함수 실행을 위하여 금액 열 이름을 amount로 변경.
   if(am != 'amount'){
@@ -30,7 +45,7 @@ mus_sampling <- \(SR, RC, PL, PM, EA, pop, am){
     Analytical.Procedures.Not.Performed = c(3, 1.9, 1.6, 0.5)
   )
 
-  assurance_factor_long <- reshape(assurance_factor_raw,
+  assurance_factor_long <- stats::reshape(assurance_factor_raw,
                                    varying = c("High", "Moderate", "Low", "Analytical.Procedures.Not.Performed"),
                                    direction = "long",
                                    v.names = "Assurance_Factor"
@@ -65,7 +80,10 @@ mus_sampling <- \(SR, RC, PL, PM, EA, pop, am){
   sampling_row <- unique(sampling_row)
 
   ## 샘플링 객체 생성
-  sampling_remain <- subset(pop_remain, select = -cum)[sampling_row,]
-  sampling <<- rbind(high_value_items, sampling_remain)
+  sampling_remain <- pop_remain[sampling_row,]
+  sampling_remain <- sampling_remain[,!names(sampling_remain) %in% "cum"]
+  sampling <- rbind(high_value_items, sampling_remain)
+  return(sampling)
 }
+
 

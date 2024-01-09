@@ -2,30 +2,30 @@
 % Please edit documentation in R/rsmsampling.R
 \name{mus_sampling}
 \alias{mus_sampling}
-\title{Title RSM Orb MUS Sampling}
+\title{RSM Orb MUS Sampling}
 \usage{
 mus_sampling(SR, RC, PL, PM, EA, pop, am)
 }
 \arguments{
-\item{SR}{Significant Risk - "Yes" or "No"}
+\item{SR}{Significant Risk : "Yes" or "No".}
 
-\item{RC}{Reliance on Control - "Yes" or "No"}
+\item{RC}{Reliance on Control : "Yes" or "No".}
 
-\item{PL}{Planned Level of Assurance from Substantive Analytical Procedures - "Analytical.Procedures.Not.Performed" :4, "High":1 , "Low":2, "Moderate:3"}
+\item{PL}{Planned Level of Assurance from Substantive Analytical Procedures : "Analytical.Procedures.Not.Performed" 4 , "High" 1 , "Low" 2, "Moderate" 3.}
 
-\item{PM}{Tolerable Misstatement(generally performance materiality) - Integer number}
+\item{PM}{Tolerable Misstatement(generally performance materiality) : Integer number.}
 
-\item{EA}{Expected misstatement - generally 0.05}
+\item{EA}{Expected misstatement : generally Tolerable Misstatement * 0.05.}
 
-\item{pop}{Population Data}
+\item{pop}{Population Data.}
 
-\item{am}{Amount Column Name - Character}
+\item{am}{Amount Column Name : Character.}
 }
 \value{
-sampling data.frame
+sampling data.frame.
 }
 \description{
-Title RSM Orb MUS Sampling
+RSM Orb MUS Sampling
 }
 \examples{
 mus_sampling("Yes", "Yes", 4, 700000000, 0.05, pop, "amount")

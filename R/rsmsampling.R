@@ -15,6 +15,15 @@
 #' mus_sampling(pop, "CR", "Yes", "Yes", 4, 700000000, 0.05)
 mus_sampling <- function(pop, am, SR, RC , PL, PM, EA){
 
+  plas <- c("High", "Moderate", "Low", "Analytical.Procedures.Not.Performed")
+
+  cat("Amount Column name :", am, "\n")
+  cat("Significant Risk :", SR, "\n")
+  cat("Reliance on Control :", RC, "\n")
+  cat("Planned Level of Assurance from Substantive Analytical Procedures :", plas[PL], "\n")
+  cat("Tolerable Misstatement :", PM, "\n")
+  cat("Expected Misstatement Rate :", EA, "\n")
+
   # mus_sampling 함수 실행을 위하여 금액 열 이름을 amount로 변경.
   if(am != 'amount'){
     names(pop)[names(pop) == am] <- 'amount'
@@ -29,6 +38,9 @@ mus_sampling <- function(pop, am, SR, RC , PL, PM, EA){
     Low = c(2.8, 1.7, 1.4, 0.3),
     Analytical.Procedures.Not.Performed = c(3, 1.9, 1.6, 0.5)
   )
+  cat("\n")
+  cat("Assurance Factor Table :", "\n")
+  print(assurance_factor_raw)
 
   assurance_factor_long <- stats::reshape(assurance_factor_raw,
                                    varying = c("High", "Moderate", "Low", "Analytical.Procedures.Not.Performed"),
@@ -37,6 +49,9 @@ mus_sampling <- function(pop, am, SR, RC , PL, PM, EA){
   )
 
   AF <-  assurance_factor_long[assurance_factor_long[,"Significant.Risk"] == SR & assurance_factor_long[, "Reliance.on.Controls"] == RC & assurance_factor_long[, "time"] == PL,"Assurance_Factor"]
+
+  cat("\n")
+  cat(paste("Assurance Factor : ", AF))
 
   ## Sampling Interval = (Tolerable Misstatement – Expected Misstatement) / Assurance Factor
   sampling_interval = (PM - PM*EA) / AF
@@ -88,6 +103,16 @@ mus_sampling <- function(pop, am, SR, RC , PL, PM, EA){
 #' @examples
 #' m_ran_sampling(pop, "CR", "Yes", "Yes", 4, 700000000, 0.05)
 m_ran_sampling <- function(pop, am, SR, RC , PL, PM, EA){
+
+  plas <- c("High", "Moderate", "Low", "Analytical.Procedures.Not.Performed")
+
+  cat("Amount Column name :", am, "\n")
+  cat("Significant Risk :", SR, "\n")
+  cat("Reliance on Control :", RC, "\n")
+  cat("Planned Level of Assurance from Substantive Analytical Procedures :", plas[PL], "\n")
+  cat("Tolerable Misstatement :", PM, "\n")
+  cat("Expected Misstatement Rate:", EA, "\n")
+
   # m_ran_sampling 함수 실행을 위하여 금액 열 이름을 amount로 변경.
   if(am != 'amount'){
     names(pop)[names(pop) == am] <- 'amount'
@@ -103,6 +128,10 @@ m_ran_sampling <- function(pop, am, SR, RC , PL, PM, EA){
     Analytical.Procedures.Not.Performed = c(3, 1.9, 1.6, 0.5)
   )
 
+  cat("\n")
+  cat("Assurance Factor Table :", "\n")
+  print(assurance_factor_raw)
+
   assurance_factor_long <- stats::reshape(assurance_factor_raw,
                                           varying = c("High", "Moderate", "Low", "Analytical.Procedures.Not.Performed"),
                                           direction = "long",
@@ -110,6 +139,9 @@ m_ran_sampling <- function(pop, am, SR, RC , PL, PM, EA){
   )
 
   AF <-  assurance_factor_long[assurance_factor_long[,"Significant.Risk"] == SR & assurance_factor_long[, "Reliance.on.Controls"] == RC & assurance_factor_long[, "time"] == PL,"Assurance_Factor"]
+
+  cat("\n")
+  cat(paste("Assurance Factor : ", AF))
 
   ## High Value
   high_value_items <- pop[pop$amount >= PM,]
